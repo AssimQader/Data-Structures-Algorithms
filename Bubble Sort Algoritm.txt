@@ -1,0 +1,90 @@
+// CODE WITH NESTED LOOP //
+
+#include<iostream>
+using namespace std;
+
+/*
+             Sorted array
+    ________________________________
+   | 4   | 7  | 9   | 50 | 70  | 100|
+   |_____|____|_____|____|_____|____|
+      0    1     2     3    4    5                            
+*/
+
+void bubbleSort(int arr[], int size)
+{
+	bool flag;
+
+	for (int i = 0; i < size -1 ; i++) //passes
+	{
+		flag = false; 
+
+		for (int j = 0; j < size - i - 1; j++) 
+		{
+			if (arr[j] > arr[j + 1])
+			{
+				swap(arr[j], arr[j + 1]);
+				flag = true; 
+			}
+		}
+
+		if (flag == false)
+			break;
+	}
+}
+
+int main()
+{
+	int arr[] = { 7, 10, 35, 9, 55,53,362,7,0,12,1,1 };
+	int x = sizeof(arr) / sizeof(arr[0]);
+
+	bubbleSort(arr, x);
+
+	for (int i = 0; i < x; ++i)
+	{
+		cout << arr[i] << " ";
+	}
+	cout << "\n";
+}
+______________________________________________________________________
+
+
+// CODE WITH RECURSION //
+
+#include<iostream>
+using namespace std;
+
+void bubbleSort_Recursion(int arr[], int size)
+{
+	bool flag = false;
+
+	if (size != 1) //size = 1 means the algorithm will sort the element in index 0 only, which is already sorted, so no need to sort it again.
+	{
+		for (int j = 0; j < size - 1; j++)
+		{
+			if (arr[j] > arr[j + 1])
+			{
+				swap(arr[j], arr[j + 1]);
+				flag = true;
+			}
+		}
+
+		if (flag != false) // if (flag == true)
+			bubbleSort_Recursion(arr, size - 1);
+		else 
+			return;
+	}
+}
+
+int main()
+{
+	int arr[] = { 7, 10, 35, 9, 55,53,362,7,0,12,1,1 };
+	int x = sizeof(arr) / sizeof(arr[0]);
+
+	bubbleSort_Recursion(arr, x);
+
+	for (int i = 0; i < x; i++)
+		cout << arr[i] << " ";
+}
+
+________________________________________________________________________
