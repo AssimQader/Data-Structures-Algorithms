@@ -1,0 +1,104 @@
+/* Implemented by Assim Qader */ 
+
+#include<iostream>
+using namespace std;
+
+class LinkedQueu 
+{
+	struct Node {
+		int data;
+		Node* next;
+	};
+
+	Node* front;
+	Node* back;
+	int queueSize;
+
+public:
+	LinkedQueu()
+	{
+		front = back = NULL;
+		queueSize = 0;
+	}
+
+	bool isEmpty()
+	{
+		if (front == NULL)
+			return true;
+		else
+			return false;
+	}
+
+	void Enqueue(int value)
+	{
+		Node* newnode = new Node;
+		newnode->data = value;
+
+		if (isEmpty())
+		{
+			newnode->next = NULL;
+			front = back = newnode;
+		}
+		else
+		{
+			newnode->next = NULL;
+			back->next = newnode;
+			back = newnode;
+		}
+		queueSize++;
+	}
+
+	void Dequeue()
+	{
+		if (isEmpty())
+			cout << "Queue is already empty!\n";
+		else
+		{
+			Node* tmp = front;
+			front = front->next;
+			delete tmp;
+			queueSize--;
+		}
+
+	}
+
+	void display()
+	{
+		if (isEmpty())
+			cout << "Nothing to display, queue is empty!\n";
+		else
+		{
+			Node* tmp = front;
+			while (tmp != NULL)
+			{
+				cout << tmp->data << "  ";
+				tmp = tmp->next;
+			}
+			cout << "\n";
+		}
+	}
+};
+
+
+int main()
+{
+	LinkedQueu lq;
+
+	lq.Enqueue(10);
+	lq.display();
+	cout << "-----------------------\n";
+
+	lq.Dequeue();
+	lq.display();
+	cout << "----------------------\n";
+
+	lq.Enqueue(70);
+	lq.Enqueue(90);
+	lq.Enqueue(30);
+	lq.display();
+	cout << "----------------------\n";
+
+	lq.Dequeue();
+	lq.display();
+	cout << "----------------------\n";
+}
