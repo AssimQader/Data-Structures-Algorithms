@@ -1,0 +1,228 @@
+/* Implemented by Assim Qader */ 
+
+#include<iostream>
+using namespace std;
+
+class DoublyLinkedList {
+private:
+	struct Node {
+		int data;
+		Node* next;
+		Node* prev;
+	};
+	Node* head;
+	Node* tail;
+	int listLength;
+public:
+	DoublyLinkedList()
+	{
+		head = tail = NULL;
+		listLength = 0;
+	}
+
+	bool isEmpty()
+	{
+		if (head == NULL)
+			return true;
+		else
+			return false;
+	}
+
+	void insertFront(int value)
+	{
+		Node* newnode = new Node;  //create a node in heap, and pointer in stack refers to this node.
+		newnode->data = value;
+
+		if (isEmpty())
+		{
+			newnode->next = NULL;
+			newnode->prev = NULL;
+			head = tail = newnode;
+		}
+		else
+		{
+			newnode->next = head;
+			newnode->prev = NULL;
+			head->prev = newnode;
+			head = newnode;
+		}
+		listLength++;
+	}
+
+	void insertBack(int value)
+	{
+		Node* newnode = new Node; 
+		newnode->data = value;
+
+		if (isEmpty())
+		{
+			newnode->next = NULL;
+			newnode->prev = NULL;
+			head = tail = newnode;
+		}
+		else
+		{
+			newnode->next = NULL;
+			newnode->prev = tail;
+			tail->next = newnode;
+			tail = newnode;
+		}
+		listLength++;
+	}
+
+	void insert_at_pos(int pos, int value)
+	{
+		if (pos > listLength || pos < 1)
+			cout << "Wrong Position!\n";
+		else
+		{
+			Node* newnode = new Node; 
+			newnode->data = value;
+
+			if (pos == 1)
+				insertFront(value);
+			else if (pos == listLength)
+				insertBack(value);
+			else
+			{
+				Node* tmp = head;
+				for (int i = 1; i < pos - 1; i++)
+				{
+					tmp = tmp->next;
+				}
+
+				newnode->next = tmp->next;
+				newnode->prev = tmp;
+				tmp->next = newnode;
+				tmp->next->prev = newnode;
+				listLength++;
+			}
+		}
+	}
+
+	void deleteFront()
+	{
+		if (isEmpty())
+			cout << "The List is already empty!\n";
+		else if (listLength == 1)
+		{
+			delete head;
+			head = tail = NULL;
+			listLength--;
+		}
+		else
+		{
+			Node* tmp = head;
+			head = head->next;
+			head->prev = NULL;
+			delete tmp;
+			listLength--;
+		}
+	}
+
+	void deleteLast()
+	{
+		if (isEmpty())
+			cout << "The List is already empty!\n";
+		else if (listLength == 1)
+		{
+			delete head;
+			head = tail = NULL;
+			listLength--;
+		}
+		else
+		{
+			Node* tmp = tail;
+			tail = tail->prev; //move the last node one step back.
+			tail->next = NULL;
+			delete tmp;
+			listLength--;
+		}
+	}
+
+	void deleteMiddle(int value)
+	{
+		if (isEmpty())
+			cout << "The List is already empty!\n";
+		else if (head->data == value)  //if the user input the data of the first node.
+			deleteFront();
+		else if (tail->data == value)  // if the user input the data of the last node.
+			deleteLast();
+		else
+		{
+			Node* tmp = head;
+
+			while (tmp != NULL && tmp->data != value)
+				tmp = tmp->next;
+
+			if (tmp == NULL)
+				cout << "There is no such an element in the list!\n";
+			else
+			{
+				tmp->prev->next = tmp->next;
+				tmp->next->prev = tmp->prev;
+				delete tmp;
+				listLength--;
+			}
+		}
+	}
+
+
+	void display()
+	{
+		if (isEmpty())
+			cout << "List is empty, nothing to display!\n";
+		else
+		{
+			Node* tmp = head;
+			while (tmp != NULL)
+			{
+				cout << tmp->data << " ";
+				tmp = tmp->next;
+			}
+			cout << "\n";
+		}
+	}
+};
+
+
+
+int main()
+{
+	DoublyLinkedList dlist;
+	dlist.insertBack(5);
+	dlist.insertBack(10);
+	dlist.insertBack(15);
+	dlist.insertBack(20);
+	dlist.insertBack(25);
+	dlist.insertBack(30);
+	dlist.display();
+	cout << "---------------------------------------\n";
+
+	dlist.insertFront(4);
+	dlist.insertFront(3);
+	dlist.insertFront(2);
+	dlist.insertFront(1);
+	dlist.display();
+	cout << "---------------------------------------\n";
+
+	dlist.insert_at_pos(6, 8);
+	dlist.display();
+	cout << "---------------------------------------\n";
+
+	dlist.deleteFront();
+	dlist.deleteFront();
+	dlist.deleteLast();
+	dlist.deleteLast();
+	dlist.display();
+	cout << "---------------------------------------\n";
+
+	dlist.deleteMiddle(70);
+	dlist.display();
+	cout << "---------------------------------------\n";
+
+	dlist.deleteMiddle(3); // 3 is the first node, not in middle, so what will happen?
+	dlist.deleteMiddle(20); // 20 is the last node, not in middle, so what will happen?
+	dlist.display();
+	cout << "---------------------------------------\n";
+}
