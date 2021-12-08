@@ -1,0 +1,136 @@
+#include<iostream>
+using namespace std;
+
+const int MAXSIZE = 6;
+
+class Queue {
+private:
+	int back, front, counter;
+	int arr[MAXSIZE];
+public:
+	Queue()
+	{
+		back = MAXSIZE - 1; 
+		front = 0;
+		counter = 0;
+		for (int i = 0; i < MAXSIZE; i++)
+		{
+			arr[i] = 0;
+		}
+	}
+
+	bool isFull()
+	{
+		if (counter == MAXSIZE)
+			return true;
+		else
+			return false;
+	}
+	bool isEmpty()
+	{
+		if (counter == 0)
+			return true;
+		else
+			return false;
+	}
+
+
+	void Enqueu(int n)
+	{
+		if (isFull())  
+			cout << "Queue is Full, cannot Enqueue...\n";
+		else
+		{
+			back = (back + 1) % MAXSIZE; 
+			arr[back] = n;
+			counter++;
+		}
+	}
+
+	void Dequeue()
+	{
+		if (isEmpty())
+			cout << "Queue is already empty...\n";
+		else
+		{
+			int deletedElement = arr[front];   
+			arr[front] = 0; 
+			front = (front + 1) % MAXSIZE;  
+			counter--;
+			cout << "The element " << deletedElement << " is removed from the queue.\n";
+		}
+	}
+
+	int count()
+	{
+		return counter;
+	}
+
+	void frontLocation()
+	{
+		cout << "Front is in index: " << front << ", and the element there is: " << arr[front] << "\n";
+	}
+	void backLocation()
+	{
+		cout << "Back is in index: " << back << ", and the element there is: " << arr[back] << "\n";
+	}
+
+	void display()
+	{
+		cout << "All elements in the queue are:\n";
+		for (int i = 0; i < MAXSIZE; ++i)
+		{
+			cout << arr[i] << "\n";
+		}
+	}
+};
+
+int main()
+{
+	Queue q1;
+	q1.Enqueu(7);   //back = (5+1) % 6 = 6 % 6 = 0... back = 0; | arr[0] = 7 | counter = 1
+	q1.Enqueu(15);  //back = (0+1) % 6 = 1 % 6 = 1... back = 1; | arr[1] = 15 | counter = 2
+	q1.Enqueu(30);  //back = (1+1) % 6 = 2 % 6 = 2... back = 2; | arr[2] = 30 | counter = 3
+	q1.Enqueu(45);  //back = (2+1) % 6 = 3 % 6 = 3... back = 3; | arr[3] = 45 | counter = 4
+	q1.Enqueu(80);  //back = (3+1) % 6 = 4 % 6 = 4... back = 4; | arr[4] = 80 | counter = 5
+	q1.Enqueu(20);  //back = (4+1) % 6 = 5 % 6 = 5... back = 5; | arr[5] = 20 | counter = 6
+	q1.display(); 
+	cout << "The number of elements in the queue = " << q1.count() << "\n";
+
+
+	cout << "\n----------------------------\n\n";
+
+
+	q1.Dequeue();  //deletedElement = 7 | arr[front(0)] = 0 |
+		       //front = (0+1) % 6 = 1 % 6 = 1... front = 1 | counter = 6-1 = 5
+
+	q1.Dequeue();  //deletedElement = 15 | arr[front(1)] = 0 |
+		       //front = (1+1) % 6 = 2 % 6 = 2... front = 2 | counter = 5-1 = 4
+
+	q1.display();
+	cout << "The number of elements in the queue = " << q1.count() << "\n";
+
+
+	cout << "\n----------------------------\n\n";
+
+
+	q1.Enqueu(100);  //back = (5+1) % 6 = 6 % 6 = 0... back = 0; | arr[0] = 100 | counter = 4+1 = 5
+	q1.display();
+
+
+	cout << "\n----------------------------\n\n";
+
+
+	q1.Dequeue();  //deletedElement = 30 | arr[front(2)] = 0 |
+		      //front = (2+1) % 6 = 3 % 6 = 3... front = 3 | counter = 5-1 = 4
+
+	q1.display();
+
+	cout << "The number of elements in the queue = " << q1.count() << "\n";
+
+
+	cout << "\n----------------------------\n\n";
+
+	q1.frontLocation();
+	q1.backLocation();
+}
