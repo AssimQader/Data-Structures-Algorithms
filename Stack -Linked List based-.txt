@@ -1,0 +1,113 @@
+/* Implemented by Assim Qader */ 
+
+#include< iostream>
+using namespace std;
+
+class LinkedStack {
+private:
+	struct Node {
+		int data;
+		Node* next;
+	};
+
+	Node* top;
+	int stackSize;
+
+public:
+	LinkedStack()
+	{
+		top = NULL;
+		stackSize = 0;
+	}
+
+	bool isEmpty()
+	{
+		if (top == NULL)
+			return true;
+		else
+			return false;
+	}
+
+	void push(int value)
+	{
+		Node* newnode = new Node;
+		newnode->data = value;
+
+		if (isEmpty())
+		{
+			newnode->next = NULL;
+			top = newnode;
+		}
+		else
+		{
+			newnode->next= top; 
+			top = newnode;
+		}
+		stackSize ++ ;
+	}
+
+	void pop()
+	{
+		if (isEmpty())
+			cout << "Stack is already empty!\n";
+		else
+		{
+			Node* tmp = top;
+			top = top->next;
+			delete tmp;
+			stackSize--;
+		}
+	}
+
+	int topValue()
+	{
+		return top->data;
+	}
+
+	int count()
+	{
+		return stackSize;
+	}
+
+	void dislay()
+	{
+		if (isEmpty())
+			cout << "Nothing to display, stack is empty!\n";
+		else
+		{
+			Node* tmp = top;
+			while (tmp != NULL)
+			{
+				cout << tmp->data << "\n";
+				tmp = tmp->next;
+			}
+		}
+	}
+};
+
+
+
+int main()
+{
+	LinkedStack ls;
+	ls.push(5);
+	ls.push(8);
+	ls.push(4);
+	ls.push(12);
+	ls.push(45);
+	ls.push(111);
+	ls.dislay();
+
+	cout << "-----------\n";
+
+	ls.pop();
+	ls.dislay();
+
+	cout << "-----------\n";
+
+	cout << "Top is stands in the element: " << ls.topValue() << "\n";
+
+	cout << "-----------\n";
+
+	cout << "The number of the elements in the stack is: " << ls.count() << "\n";
+}
