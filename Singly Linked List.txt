@@ -1,0 +1,293 @@
+/* Implemented by Assim Qader */ 
+
+
+#include<iostream>
+using namespace std;
+
+class LinkedList {
+private:
+	//any Node is a struct consist of data and pointer to the next Node:
+	struct Node {
+		int data ;
+		Node* Next; //pointer to the next node, so its datatype must be the same datatype of node.
+	};
+
+	Node* head;           //pointer to the first node in the linked list.
+	Node* tail;           //pointer to the last node in the linked list.
+
+	int listLength; 
+
+public:
+
+	LinkedList()
+	{  
+		head = tail = NULL;     
+		listLength = 0;       
+	}
+
+	bool isEmpty()
+	{
+		if (head == NULL)  //same as : listLength == 0;
+			return true;
+		else
+			return false;
+	}
+
+	void frontInsert(int value)
+	{
+		Node* newnode = new Node; //create a node.
+		newnode->data = value; //assign its data.
+
+		/* Before assigning "Next" for this newnode, you must ask: is the headnode pointes to another node after it, or the list is empty, which means head points to NULL(head = NULL) ? */
+
+		if (isEmpty()) 
+		{
+			newnode->Next = NULL;
+			head = tail = newnode;
+		}
+		else
+		{
+			newnode->Next = head;  //Point the ‘next’ of the newnode to the ‘headnode’ of the linked list.
+			head = newnode;        //Mark newnode as ‘head’.
+		} 
+
+		listLength++;
+	}
+
+	void backInsert(int value)
+	{
+		Node* newnode = new Node;
+		newnode->data = value;
+
+		if (isEmpty())
+		{
+			newnode->Next = NULL;
+			head = tail = newnode;
+		}
+		else
+		{
+			newnode->Next = NULL;
+			tail->Next = newnode;  //Point the last node(tail) of the linked list to the newnode instead of pointing to NULL.
+			tail = newnode;  //Mark newnode as ‘tail’. same as: tail = tail->Next;
+		}
+
+		listLength++;
+	}
+
+	void Insert_at_pos(int pos, int value)
+	{
+		if (pos < 0 || pos > listLength)
+			cout << "wrong position.\n";
+		else
+		{
+			Node* newnode = new Node;
+			newnode->data = value;
+
+			if (pos == 0)
+				frontInsert(value);
+			else if (pos == listLength)
+				backInsert(value);
+			else
+			{
+				Node* temp = new Node;
+			       temp = head;  //imagine replace the head node with temp node, so you can traverse with temp instead of head(head is unable to move).
+				for (int i = 1; i < pos-1; ++i)  //[i < position -1] to stop in the node that comes before the node you will insert in its place.
+				{
+					temp = temp->Next; //move to the next node.
+				}
+
+				newnode->Next = temp->Next;
+				temp->Next = newnode;
+				listLength++;
+			}
+		}
+	}
+
+	void deleteFront() 
+	{
+		if (isEmpty())  
+			cout << "List is already empty.\n";
+		else if (listLength == 1)  //if there is only one node:
+		{
+			delete head;  //delete the node that head points to, not deleting the pointer head itself.
+			head = tail = NULL;
+			listLength--;
+		}
+		else
+		{
+			Node* temp = head;  //temp refer to the first node (as head).
+			head = head->Next;  //move head to the second node in the list.
+			delete temp;  //delete the first node that temp points to.
+			listLength--;
+		}
+	}
+
+	void deleteBack()
+	{
+		Node* temp = head;
+		if (isEmpty())  
+			cout << "List is already empty.\n";
+		else if (listLength == 1)
+		{
+			delete head;  
+			head = tail = NULL;
+			listLength--;
+		}
+		else
+		{
+			while (temp->Next->Next != NULL)
+			{
+				temp = temp->Next;
+			}
+
+			tail = temp; //move tail from the last node to the previous one, because in the next line I will delete the last node.
+			delete temp->Next; //frees up the last node from heap, leaving "temp" pointing to what is now the last node.
+			temp->Next = NULL;
+			listLength--;
+		}
+	}
+
+	void deleteMiddle(int value)
+	{
+		if (isEmpty())  
+			cout << "List is already empty.\n";
+		else if (listLength == 1)
+		{
+			delete head;
+			head = tail = NULL;
+			listLength--;
+		}
+		else
+		{
+			Node* temp, * prev;
+			temp = prev = head;
+
+			while (temp != NULL && temp->data != value)
+			{
+				prev = temp;
+				temp = temp->Next;
+			}
+
+			if (temp == NULL)
+				cout << "There is no such a value to delete from this list.\n";
+			else
+			{
+				prev->Next = temp->Next;
+				delete temp;
+				listLength--;
+			}
+		}
+	}
+
+
+	void Reverse()
+	{
+		if (isEmpty())
+			cout << "List is Empty!\n";
+
+		Node* prev = NULL;
+		Node* post = NULL;
+		Node* curr = head;
+		while (curr != NULL)
+		{
+			post = curr->next;
+			curr->next = prev;
+			prev = curr;
+			curr = post;
+		}
+		tail = head;
+		head = prev;
+              cout << "The List has been reversed.\n";
+	}
+
+
+	void search(int value)
+	{
+		if (isEmpty())
+			cout << "Unable to search, list is empty..\n";
+		else
+		{
+			Node* tmp = head;
+			int index = 1;
+			while (tmp != NULL && tmp->data != value)
+			{
+				tmp = tmp->next;
+				index++;
+			}
+			if (tmp == NULL)
+				cout << "There is no such an element in the list!\n";
+			else
+				cout << "The element " << value << " is in the position " << index << "\n";
+		}
+	}
+
+
+	void display()
+	{
+		Node* temp = head;
+		while (temp != NULL)
+		{
+			cout << temp->data << " ";
+			temp = temp->Next;  
+		}
+		cout << "\n";
+	}
+};
+
+
+
+int main()
+{
+		LinkedList list1;
+
+	cout<< list1.isEmpty();  // 1 true
+	cout << "\n---------------------------------\n";
+
+	list1.deleteFront();
+	cout << "---------------------------------\n";
+
+	list1.backInsert(5);
+	list1.backInsert(7);
+	list1.backInsert(11);
+	list1.backInsert(35);
+	list1.backInsert(53);
+	list1.backInsert(75);
+	list1.backInsert(0);
+	list1.display();
+	cout << "\n---------------------------------\n";
+
+	list1.frontInsert(10);
+	list1.frontInsert(33);
+	list1.display();
+	cout << "\n---------------------------------\n";
+
+	list1.deleteBack(); //delete 0
+	list1.display();
+	cout << "\n---------------------------------\n";
+
+	list1.deleteFront(); //delete 33
+	list1.display();
+	cout << "\n---------------------------------\n";
+
+	list1.Insert_at_pos(4, 107);
+	list1.Insert_at_pos(10, 1);  //Wrong Position!
+	list1.display();
+	cout << "\n---------------------------------\n";
+
+	list1.deleteMiddle(35);
+	list1.display();
+	cout << "\n---------------------------------\n";
+
+
+	list1.Reverse();
+	list1.display();
+	cout << "\n---------------------------------\n";
+
+	list1.backInsert(88);
+	list1.frontInsert(111);
+	list1.display();
+	cout << "\n---------------------------------\n";
+
+       list1.search(53);
+       cout << "\n---------------------------------\n";
+}
