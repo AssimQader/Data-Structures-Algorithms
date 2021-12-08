@@ -25,9 +25,8 @@ int partition(int arr[], int start, int end)
 		}
 	}
 
-//when i reaches r: exit loop and swap pi with pivot( arr[end] )//
-
-	swap(arr[pi], arr[end]); //arr[end] = pivot, but never ever write: swap(arr[pi], pivot); it is completely wrong.
+        //when reaches "end": exit loop and swap "pi" with "pivot( arr[end] )" //
+	swap(arr[pi], arr[end]);   //arr[end] = pivot, but never ever write: swap(arr[pi], pivot); it is completely wrong.
 	return pi; 
 }
 
@@ -50,8 +49,5 @@ int main()
 	quickSort(arr, 0, x-1);
 
 	for (int i = 0; i < x; ++i)
-	{
 		cout << arr[i] << " ";
-	}
-	cout << "\n";
 }
