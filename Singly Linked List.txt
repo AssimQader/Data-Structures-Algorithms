@@ -38,7 +38,8 @@ public:
 		Node* newnode = new Node; //create a node.
 		newnode->data = value; //assign its data.
 
-		/* Before assigning "Next" for this newnode, you must ask: is the headnode pointes to another node after it, or the list is empty, which means head points to NULL(head = NULL) ? */
+		/* Before assigning "Next" for this newnode, you must ask: is the headnode pointes to another node after it,
+		or the list is empty, which means head points to NULL(head = NULL) ? */
 
 		if (isEmpty()) 
 		{
@@ -91,6 +92,7 @@ public:
 			{
 				Node* temp = new Node;
 			       temp = head;  //imagine replace the head node with temp node, so you can traverse with temp instead of head(head is unable to move).
+			       
 				for (int i = 1; i < pos-1; ++i)  //[i < position -1] to stop in the node that comes before the node you will insert in its place.
 				{
 					temp = temp->Next; //move to the next node.
